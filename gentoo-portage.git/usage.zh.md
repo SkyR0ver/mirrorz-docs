@@ -1,21 +1,48 @@
 ## 使用方法
 
-第一次使用 `git` 同步方式的用户需要进行如下操作：
+### 从 rsync 切换到 Git 或修改镜像
 
-- 修改 `/etc/portage/repos.conf/gentoo.conf`
-	- 将 `sync-type` 改为 `git`
-	- 将 `sync-uri` 改为 {ztmpl}`{{endpoint}}`
+安装 `eselect-repository`：
 
-- 删除 `/var/db/repos/gentoo`
-- 执行 `emerge --sync`
+```{ztmpl lang="bash"}
+{{sudo}}emerge --ask app-eselect/eselect-repository
+```
 
-已经配置 `git` 同步的用户只需：
+删除现有的 Gentoo ebuild 仓库配置和本地副本，再使用相应镜像添加 Git 仓库：
 
-- 修改 `/etc/portage/repos.conf/gentoo.conf`
-	- 将 `sync-uri` 改为 {ztmpl}`{{endpoint}}`
+```{ztmpl lang="bash"}
+{{sudo}}eselect repository remove -f gentoo
+{{sudo}}eselect repository add gentoo git {{endpoint}}
+```
 
-- 于 `/var/db/repos/gentoo` 下，执行
-  ```{ztmpl}
-  git remote set-url origin {{endpoint}}
-  ```
-- 执行 `emerge --sync`
+同步 Gentoo ebuild 仓库：
+
+```{ztmpl lang="bash"}
+{{sudo}}emaint sync -r gentoo
+```
+
+不同镜像的同步进度可能不同；更换 Git 镜像时，建议使用上述方法删除并重新添加仓库。
+
+## 手动从 rsync 切换或更换镜像
+
+系统默认配置文件位于 `/etc/portage/repos.conf/gentoo.conf`，只需修改 `sync-uri` 与 `sync-type`。
+
+通过 `eselect-repository` 生成的配置位于 `/etc/portage/repos.conf/eselect-repo.conf`。
+
+完整配置示例：
+
+```{ztmpl lang="ini" path="/etc/portage/repos.conf/gentoo.conf"}
+[gentoo]
+location = /var/db/repos/gentoo
+sync-type = git
+sync-uri = {{endpoint}}
+```
+
+首次从 rsync 切换到 Git 或更换镜像时，删除现有的本地仓库并重新同步：
+
+```{ztmpl lang="bash"}
+{{sudo}}rm -rf /var/db/repos/gentoo
+{{sudo}}emaint sync -r gentoo
+```
+
+配置原理和排障方法见 [Portage with Git](https://wiki.gentoo.org/wiki/Portage_with_Git)。

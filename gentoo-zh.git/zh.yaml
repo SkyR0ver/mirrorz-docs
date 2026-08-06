@@ -1,3 +1,4 @@
 _: gentoo-zh Overlay Git
 block:
+- intro
 - usage

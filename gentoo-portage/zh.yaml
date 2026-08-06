@@ -1,3 +1,4 @@
 _: Gentoo Portage 软件仓库
 block:
+- intro
 - usage
