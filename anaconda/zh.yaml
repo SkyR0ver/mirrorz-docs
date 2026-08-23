@@ -1,12 +1,15 @@
 _: Anaconda 软件仓库
 block:
 - intro
+- distribution
 - usage
+- usage-community
 - customs
 - customs-tuna
 - customs-sjtug
 - customs-sustech
 - miniconda
+- miniforge
 input:
   channel:
     _: 第三方源
