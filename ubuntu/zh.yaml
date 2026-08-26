@@ -2,6 +2,7 @@ _: Ubuntu 软件仓库
 block:
 - ports
 - old-releases
+- intro
 - ubuntu
 input:
   release:

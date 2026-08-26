@@ -1,5 +1,6 @@
 _: Debian 软件源
 block:
+- intro
 - usage
 - omv
 - nginx

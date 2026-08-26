@@ -1,4 +1,5 @@
 _: Fedora 软件仓库
 block:
 - cover
+- intro
 - usage
