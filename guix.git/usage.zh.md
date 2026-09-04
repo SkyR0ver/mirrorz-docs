@@ -8,5 +8,5 @@
 ```{ztmpl lang="scheme" path="~/.config/guix/channels.scm"}
 (list (channel
        (inherit (car %default-channels))
-       (url "{{endpoint}}/git/guix.git")))
+       (url "{{endpoint}}")))
 ```

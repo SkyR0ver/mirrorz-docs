@@ -28,5 +28,5 @@
   `--substitute-urls` 参数。比如修改 `guix-daemon.service` 的 `ExecStart` 为：
 
   ```{ztmpl lang="conf"}
-  ExecStart=/var/guix/profiles/per-user/root/current-guix/bin/guix-daemon --build-users-group=guixbuild --substitute-urls="{{endpoint}}/guix"
+  ExecStart=/var/guix/profiles/per-user/root/current-guix/bin/guix-daemon --build-users-group=guixbuild --substitute-urls="{{endpoint}}"
   ```
