@@ -4,40 +4,35 @@
 
 该接口需要 APT 1.6 及以上版本（即 Debian 10 buster 及以上）。
 
+默认启用“安全更新使用官方索引”，在安全更新的 mirrorlist URL 中添加 `?official_index=1`，优先从官方源获取索引，再按镜像列表的顺序下载软件包；如果镜像站尚未同步所需软件包，会回退到官方源。官方索引不可用时，APT 也会尝试镜像站的索引。没有可用镜像时，列表仍保留官方源。关闭此选项只会移除该参数，索引和软件包都由 mirrorlist 中的镜像站提供。
+
 ### 传统格式（`/etc/apt/sources.list`）
 
-```{ztmpl lang="properties" input="release src nf mirror_security" path="/etc/apt/sources.list"}
+```{ztmpl lang="properties" input="release src nf official_index" path="/etc/apt/sources.list"}
 # 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
 {{#sid}}
-deb mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian/ sid main contrib{{#nf}}{{nonfree}}{{/nf}}
-{{src}}deb-src mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian/ sid main contrib{{#nf}}{{nonfree}}{{/nf}}
+deb mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian sid main contrib{{#nf}}{{nonfree}}{{/nf}}
+{{src}}deb-src mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian sid main contrib{{#nf}}{{nonfree}}{{/nf}}
 {{/sid}}
 {{^sid}}
-deb mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian/ {{release}} main contrib{{#nf}}{{nonfree}}{{/nf}}
-{{src}}deb-src mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian/ {{release}} main contrib{{#nf}}{{nonfree}}{{/nf}}
+deb mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian {{release}} main contrib{{#nf}}{{nonfree}}{{/nf}}
+{{src}}deb-src mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian {{release}} main contrib{{#nf}}{{nonfree}}{{/nf}}
 
-deb mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian/ {{release}}-updates main contrib{{#nf}}{{nonfree}}{{/nf}}
-{{src}}deb-src mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian/ {{release}}-updates main contrib{{#nf}}{{nonfree}}{{/nf}}
+deb mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian {{release}}-updates main contrib{{#nf}}{{nonfree}}{{/nf}}
+{{src}}deb-src mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian {{release}}-updates main contrib{{#nf}}{{nonfree}}{{/nf}}
 
-deb mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian/ {{release}}-backports main contrib{{#nf}}{{nonfree}}{{/nf}}
-{{src}}deb-src mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian/ {{release}}-backports main contrib{{#nf}}{{nonfree}}{{/nf}}
+deb mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian {{release}}-backports main contrib{{#nf}}{{nonfree}}{{/nf}}
+{{src}}deb-src mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian {{release}}-backports main contrib{{#nf}}{{nonfree}}{{/nf}}
 
-{{#mirror_security}}
-# 以下安全更新软件源为镜像站配置
-deb mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian-security {{release}}{{security}} main contrib{{#nf}}{{nonfree}}{{/nf}}
-{{src}}deb-src mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian-security {{release}}{{security}} main contrib{{#nf}}{{nonfree}}{{/nf}}
-{{/mirror_security}}
-{{^mirror_security}}
-# 以下安全更新软件源为官方源配置
-deb {{scheme}}://security.debian.org/debian-security {{release}}{{security}} main contrib{{#nf}}{{nonfree}}{{/nf}}
-{{src}}deb-src {{scheme}}://security.debian.org/debian-security {{release}}{{security}} main contrib{{#nf}}{{nonfree}}{{/nf}}
-{{/mirror_security}}
+# 安全更新软件源
+deb mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian-security{{#official_index}}?official_index=1{{/official_index}} {{release}}{{security}} main contrib{{#nf}}{{nonfree}}{{/nf}}
+{{src}}deb-src mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian-security{{#official_index}}?official_index=1{{/official_index}} {{release}}{{security}} main contrib{{#nf}}{{nonfree}}{{/nf}}
 {{/sid}}
 ```
 
 ### DEB822 格式（`/etc/apt/sources.list.d/debian.sources`）
 
-```{ztmpl lang="yaml" input="release_deb822 src nf mirror_security" path="/etc/apt/sources.list.d/debian.sources"}
+```{ztmpl lang="yaml" input="release_deb822 src nf official_index" path="/etc/apt/sources.list.d/debian.sources"}
 {{#sid}}
 Types: deb
 URIs: mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian
@@ -66,33 +61,17 @@ Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 {{src}}Components: main contrib{{#nf}} non-free non-free-firmware{{/nf}}
 {{src}}Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 
-{{#mirror_security}}
-# 以下安全更新软件源为镜像站配置
+# 安全更新软件源
 Types: deb
-URIs: mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian-security
+URIs: mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian-security{{#official_index}}?official_index=1{{/official_index}}
 Suites: {{release_deb822}}-security
 Components: main contrib{{#nf}} non-free non-free-firmware{{/nf}}
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 
 {{src}}Types: deb-src
-{{src}}URIs: mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian-security
+{{src}}URIs: mirror+{{scheme}}://mirrors.cernet.edu.cn/api/apt/mirrorlist/debian-security{{#official_index}}?official_index=1{{/official_index}}
 {{src}}Suites: {{release_deb822}}-security
 {{src}}Components: main contrib{{#nf}} non-free non-free-firmware{{/nf}}
 {{src}}Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
-{{/mirror_security}}
-{{^mirror_security}}
-# 以下安全更新软件源为官方源配置
-Types: deb
-URIs: {{scheme}}://security.debian.org/debian-security
-Suites: {{release_deb822}}-security
-Components: main contrib{{#nf}} non-free non-free-firmware{{/nf}}
-Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
-
-{{src}}Types: deb-src
-{{src}}URIs: {{scheme}}://security.debian.org/debian-security
-{{src}}Suites: {{release_deb822}}-security
-{{src}}Components: main contrib{{#nf}} non-free non-free-firmware{{/nf}}
-{{src}}Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
-{{/mirror_security}}
 {{/sid}}
 ```
