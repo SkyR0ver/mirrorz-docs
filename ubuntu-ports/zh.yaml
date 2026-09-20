@@ -1,5 +1,7 @@
 _: Ubuntu Ports 软件仓库
 block:
+- old-releases
+- intro
 - ubuntu-ports
 input:
   release:
@@ -36,4 +38,9 @@ input:
   mirror_security:
     _: 强制安全更新使用镜像
     note: 为了更及时地获得安全更新，不推荐使用镜像站安全更新软件源
+    true:
+  official_index:
+    _: 安全更新使用官方索引
+    note: 优先获取官方索引，软件包优先从镜像站下载，失败时回退到官方源
+    default: true
     true:
