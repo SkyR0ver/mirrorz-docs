@@ -38,3 +38,8 @@ input:
     _: 使用非自由软件源
     default: true
     true:
+  official_index:
+    _: 安全更新使用官方索引
+    note: 优先获取官方索引，软件包优先从镜像站下载，失败时回退到官方源
+    default: true
+    true:
