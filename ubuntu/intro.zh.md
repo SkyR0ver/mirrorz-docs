@@ -27,3 +27,9 @@ LOGO=ubuntu-logo
 ```
 
 `VERSION_ID` 后面的版本号即为当前系统版本，`VERSION_CODENAME` 后面的是代号。代号在软件源配置文件中会被使用。**请注意在下面的配置中选择符合你的机器的版本号，在替换配置前确认代号一致，否则之后的更新操作可能导致系统出现问题。**
+
+Ubuntu 18.04 LTS 及以上版本默认支持 HTTPS 源。如果遇到无法拉取 HTTPS 源的情况，请先使用 HTTP 源并安装通用 CA 证书：
+
+```{ztmpl lang="bash"}
+{{sudo}}apt install ca-certificates
+```

@@ -3,7 +3,7 @@
 首先请安装依赖：
 
 ```{ztmpl lang="bash"}
-{{sudo}}apt-get update && {{sudo}}apt-get install -y wget apt-transport-https
+{{sudo}}apt-get update && {{sudo}}apt-get install -y wget
 ```
 
 然后信任 GPG 公钥：
