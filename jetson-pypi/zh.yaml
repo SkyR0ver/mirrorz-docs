@@ -1,0 +1,18 @@
+_: NVIDIA Jetson PyPI 软件仓库
+block:
+- jetson-pypi
+filter:
+  scheme: https
+input:
+  channel:
+    _: 通道
+    default: jp6/cu126
+    option:
+      jp6/cu126:
+        _: JetPack 6 / CUDA 12.6
+      jp6/cu128:
+        _: JetPack 6 / CUDA 12.8
+      jp6/cu129:
+        _: JetPack 6 / CUDA 12.9
+      sbsa/cu130:
+        _: SBSA / CUDA 13.0
