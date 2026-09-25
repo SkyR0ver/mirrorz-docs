@@ -10,7 +10,7 @@ Fedora 默认使用 metalink，可将仓库配置中的 `metalink=` 替换为指
 [fedora]
 name=Fedora $releasever - $basearch
 #baseurl={{endpoint}}/releases/$releasever/Everything/$basearch/os/
-mirrorlist=https://mirrors.cernet.edu.cn/api/rpm/mirrorlist/fedora/$releasever/Everything/$basearch/os/
+mirrorlist=https://mirrors.cernet.edu.cn/api/rpm/mirrorlist/fedora/releases/$releasever/Everything/$basearch/os/
 enabled=1
 countme=1
 metadata_expire=7d
@@ -27,7 +27,7 @@ skip_if_unavailable=False
 [updates]
 name=Fedora $releasever - $basearch - Updates
 #baseurl={{endpoint}}/updates/$releasever/Everything/$basearch/
-mirrorlist=https://mirrors.cernet.edu.cn/api/rpm/mirrorlist/fedora/$releasever/Everything/$basearch/
+mirrorlist=https://mirrors.cernet.edu.cn/api/rpm/mirrorlist/fedora/updates/$releasever/Everything/$basearch/
 enabled=1
 countme=1
 repo_gpgcheck=0
